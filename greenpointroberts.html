@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link href="https://cdn.jsdelivr.net/npm/quasar@2.11.5/dist/quasar.prod.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+  <a href="https://codepen.io/peterteach/pen/XWBBMJP">CodePen Demo</a>
+  <hr>
+  <div id="q-app">
+    <div class="overflow-hidden">
+      <q-resize-observer @resize="onResize" :debounce="0"></q-resize-observer>
+      <q-splitter
+        id="maps"
+        v-model="splitterModel"
+        :limits="[0, 100]"
+        :style="splitterStyle"
+        before-class="overflow-hidden"
+        after-class="overflow-hidden"
+      >
+        <template v-slot:before>
+          <img
+            src="./_output_green_bias_google_map_img.png"
+            :width="width"
+            class="absolute-top-left"
+          />
+        </template>
+          <template v-slot:after>
+          <img
+            src="./_output_google_image_point_roberts.png"
+            :width="width"
+            class="absolute-top-right"
+          />
+        </template>
+        </q-splitter>
+    </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/vue@3/dist/vue.global.prod.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/quasar@2.11.5/dist/quasar.umd.prod.js"></script>
+  <script>
+    const { ref, computed } = Vue
+    const app = Vue.createApp({
+      setup () {
+        const width = ref(400)
+        return {
+          width,
+          splitterModel: ref(50), // start at 50%
+          splitterStyle: computed(() => ({
+            width: width.value + 'px',
+            height: 0.7*width.value + 'px'
+          })),
+          // we are using QResizeObserver to keep
+          // this example mobile-friendly
+          onResize (info) {
+            width.value = info.width
+          }
+        }
+      }
+    })
+    app.use(Quasar, { config: {} })
+    app.mount('#q-app')
+  </script>
+</body>
+</html>
